@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  template-pg:
+    image: bitnami/postgresql:latest
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRESQL_USERNAME: ${DB_USERNAME}
+      POSTGRESQL_PASSWORD: ${DB_PASSWORD}
+      POSTGRESQL_DATABASE: ${DB_NAME}
+
+      POSTGRESQL_PGA_HBA_CONF: "host all all 0.0.0.0/0 trust"
+    volumes:
+      - postgres_data:/bitnami/postgresql
+
+volumes:
+  postgres_data:
+    driver: local

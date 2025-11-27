@@ -10,13 +10,13 @@ async function bootstrap() {
     .setTitle('Sistema de Reserva de Salas')
     .setDescription('API de reservas, salas, usuários e logs')
     .setVersion('1.0')
-    .addBearerAuth() // Para endpoints autenticados futuramente
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, {
     swaggerOptions: {
-      persistAuthorization: true, // mantém o token entre requisições
+      persistAuthorization: true,
     },
   });
 
