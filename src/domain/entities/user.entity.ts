@@ -1,19 +1,15 @@
 import { Entity, EntityMetadata } from '../../core/entities/entity'
 
-export enum UserRole {
-  Admin = 'admin',
-  Default = 'default'
-}
+export enum UserRole {Admin = 'admin',Default = 'default'}
 
-export enum UserStatus {
-  Active = 'active',
-  Inactive = 'inactive'
-}
+export enum UserStatus {Active = 'active', Inactive = 'inactive'}
 
 export interface UserProps {
   name: string
   email: string
   registration: string
+  password: string // Hash
+  departament: string
   phone?: string
   cpf?: string
   role?: UserRole
