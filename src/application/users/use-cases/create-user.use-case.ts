@@ -1,7 +1,7 @@
 import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common'
 
 import { User, UserProps } from 'src/domain/entities/user.entity'
-import { USER_REPOSITORY } from 'src/domain/repositories/tokens'
+import { USER_REPOSITORY } from 'src/core/tokens/repository.tokens'
 import type { UserRepository } from 'src/domain/repositories/user.repository'
 
 export interface CreateUserUseCaseRequest {

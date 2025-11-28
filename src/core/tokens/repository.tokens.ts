@@ -1,0 +1,5 @@
+export const USER_REPOSITORY = Symbol('UsersRepository')
+export const ROOM_REPOSITORY = Symbol('RoomsRepository')
+export const BOOKING_REPOSITORY = Symbol('BookingsRepository')
+export const RECURRENCE_REPOSITORY = Symbol('RecurrencesRepository')
+export const LOG_REPOSITORY = Symbol('LogsRepository')
