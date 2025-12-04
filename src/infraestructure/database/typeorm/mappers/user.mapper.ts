@@ -1,38 +1,54 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common';
 
-import { Mapper } from 'src/core/mappers/mapper'
-import { UniqueEntityID } from 'src/core/entities/unique-entity-id'
+import { Mapper } from 'src/core/mappers/mapper';
+import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 
-import { User, UserProps } from 'src/domain/entities/user.entity'
-import { TypeormUserEntity } from '../entities/typeorm-user.entity'
+import { User, UserProps } from 'src/domain/entities/user.entity';
+import { TypeormUserEntity } from '../entities/typeorm-user.entity';
 
 @Injectable()
 export class UserMapper implements Mapper<User, TypeormUserEntity> {
   toDomain(persistenceEntity: TypeormUserEntity): User {
-    return User.create({
-      id: new UniqueEntityID(persistenceEntity.id),
-      name: persistenceEntity.name,
-      registration: persistenceEntity.registration,
-      email: persistenceEntity.email,
-      status: persistenceEntity.status as UserProps['status'],
-      createdAt: persistenceEntity.createdAt,
-      updatedAt: persistenceEntity.updatedAt,
-      deletedAt: persistenceEntity.deletedAt
-    })
+    const user = User.create(
+      {
+        name: persistenceEntity.name,
+        email: persistenceEntity.email,
+        registration: persistenceEntity.registration,
+        password: persistenceEntity.password,
+        departament: persistenceEntity.departament,
+        phone: persistenceEntity.phone ?? undefined,
+        cpf: persistenceEntity.cpf ?? undefined,
+        role: persistenceEntity.role ?? undefined,
+        status: persistenceEntity.status ?? undefined,
+        createdAt: persistenceEntity.createdAt,
+        updatedAt: persistenceEntity.updatedAt,
+        deletedAt: persistenceEntity.deletedAt ?? undefined,
+      } as UserProps,
+    );
+
+    // Se sua entidade de domínio usa UniqueEntityID separado
+    (user as any).id = new UniqueEntityID(persistenceEntity.id);
+
+    return user;
   }
 
   toPersistence(domainEntity: User): TypeormUserEntity {
-    const entity = new TypeormUserEntity()
+    const entity = new TypeormUserEntity();
 
-    entity.id = domainEntity.id.toString()
-    entity.name = domainEntity.name
-    entity.registration = domainEntity.registration
-    entity.email = domainEntity.email
-    entity.status = domainEntity.status
-    entity.createdAt = domainEntity.createdAt
-    entity.updatedAt = domainEntity.updatedAt
-    entity.deletedAt = domainEntity.deletedAt
+    entity.id = domainEntity.id.toString();
+    entity.name = domainEntity.name;
+    entity.email = domainEntity.email;
+    entity.registration = domainEntity.registration;
+    entity.password = domainEntity.password;
+    entity.departament = domainEntity.departament;
+    entity.phone = domainEntity.phone ?? undefined;
+    entity.cpf = domainEntity.cpf ?? undefined;
+    entity.role = domainEntity.role ?? undefined;
+    entity.status = domainEntity.status ?? undefined;
+    entity.createdAt = domainEntity.createdAt;
+    entity.updatedAt = domainEntity.updatedAt;
+    entity.deletedAt = domainEntity.deletedAt ?? null;
 
-    return entity
+    return entity;
   }
 }

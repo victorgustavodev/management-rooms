@@ -14,6 +14,7 @@ export interface RoomProps {
 }
 
 export class Room extends Entity<RoomProps> {
+  weekdaysOpeningHours: number[];
   get name(): string {
     return this.props.name;
   }

@@ -1,3 +1,4 @@
+import type { UniqueEntityID } from 'src/core/entities/unique-entity-id'
 import { Entity, EntityMetadata } from '../../core/entities/entity'
 
 export enum BookingStatus {
@@ -57,7 +58,7 @@ export class Booking extends Entity<BookingProps> {
     return (this.props.end.getTime() - this.props.start.getTime()) / 60000
   }
 
-  static create(props: BookingProps & Partial<EntityMetadata>): Booking {
+  static create(props: BookingProps & Partial<EntityMetadata>, p0: UniqueEntityID): Booking {
     if (props.end <= props.start) {
         throw new Error("End date must be after start date")
     }
