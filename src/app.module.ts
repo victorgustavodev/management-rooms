@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from './application/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager'
-
+import { RoomModule } from './application/room/room.module';
 
 @Module({
   imports: [
@@ -18,8 +16,8 @@ import { CacheModule } from '@nestjs/cache-manager'
         ttl: 1000 * 60 * 5,
       }),
     }),
-
     UserModule,
+    RoomModule
   ]
   // controllers: [AppController],
   // providers: [AppService],

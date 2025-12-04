@@ -8,6 +8,7 @@ export class UserPresenter {
       email: user.email,
       registration: user.registration,
       status: user.status,
+      role: user.role,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     }

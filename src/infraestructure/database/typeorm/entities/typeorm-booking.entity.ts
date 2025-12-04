@@ -41,7 +41,4 @@ export class TypeormBookingEntity extends TypeormEntity implements BookingProps 
 
   @Column({ type: 'enum', enum: BookingStatus, default: BookingStatus.Pending })
   status: BookingStatus;
-
-  @Column({ nullable: true })
-  recurrenceId?: string | null;
 }

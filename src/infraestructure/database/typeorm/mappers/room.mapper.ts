@@ -1,3 +1,4 @@
+// src/infraestructure/database/typeorm/mappers/room.mapper.ts
 import { Injectable } from '@nestjs/common';
 import { Mapper } from 'src/core/mappers/mapper';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
@@ -8,23 +9,23 @@ import { TypeormRoomEntity } from '../entities/typeorm-room.entity';
 @Injectable()
 export class RoomMapper implements Mapper<Room, TypeormRoomEntity> {
   toDomain(persistenceEntity: TypeormRoomEntity): Room {
-    return Room.create(
-      {
-        name: persistenceEntity.name,
-        floor: persistenceEntity.floor,
-        capacity: persistenceEntity.capacity,
-        location: persistenceEntity.location,
-        description: persistenceEntity.description ?? undefined,
-        startOperationHours: persistenceEntity.startOperationHours,
-        endOperationHours: persistenceEntity.endOperationHours,
-        weekdaysOpeningHours: persistenceEntity.weekdaysOpeningHours,
-        active: persistenceEntity.active,
-        createdAt: persistenceEntity.createdAt,
-        updatedAt: persistenceEntity.updatedAt,
-        deletedAt: persistenceEntity.deletedAt ?? undefined,
-      // se RoomProps tiver id: UniqueEntityID, passe aqui:
-      // id: new UniqueEntityID(persistenceEntity.id),
-    } as RoomProps);
+    const room = Room.create({
+      id: new UniqueEntityID(persistenceEntity.id),
+      name: persistenceEntity.name,
+      floor: persistenceEntity.floor,
+      capacity: persistenceEntity.capacity,
+      location: persistenceEntity.location,
+      description: persistenceEntity.description ?? null,
+      startOperationHours: persistenceEntity.startOperationHours,
+      endOperationHours: persistenceEntity.endOperationHours,
+      weekdaysOpeningHours: persistenceEntity.weekdaysOpeningHours,
+      active: persistenceEntity.active,
+      createdAt: persistenceEntity.createdAt,
+      updatedAt: persistenceEntity.updatedAt,
+      deletedAt: persistenceEntity.deletedAt ?? null,
+    } as RoomProps & { id: UniqueEntityID });
+
+    return room;
   }
 
   toPersistence(domainEntity: Room): TypeormRoomEntity {

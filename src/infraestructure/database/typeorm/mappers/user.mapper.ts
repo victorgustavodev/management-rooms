@@ -9,25 +9,21 @@ import { TypeormUserEntity } from '../entities/typeorm-user.entity';
 @Injectable()
 export class UserMapper implements Mapper<User, TypeormUserEntity> {
   toDomain(persistenceEntity: TypeormUserEntity): User {
-    const user = User.create(
-      {
-        name: persistenceEntity.name,
-        email: persistenceEntity.email,
-        registration: persistenceEntity.registration,
-        password: persistenceEntity.password,
-        departament: persistenceEntity.departament,
-        phone: persistenceEntity.phone ?? undefined,
-        cpf: persistenceEntity.cpf ?? undefined,
-        role: persistenceEntity.role ?? undefined,
-        status: persistenceEntity.status ?? undefined,
-        createdAt: persistenceEntity.createdAt,
-        updatedAt: persistenceEntity.updatedAt,
-        deletedAt: persistenceEntity.deletedAt ?? undefined,
-      } as UserProps,
-    );
-
-    // Se sua entidade de domínio usa UniqueEntityID separado
-    (user as any).id = new UniqueEntityID(persistenceEntity.id);
+    const user = User.create({
+      id: new UniqueEntityID(persistenceEntity.id),
+      name: persistenceEntity.name,
+      email: persistenceEntity.email,
+      registration: persistenceEntity.registration,
+      password: persistenceEntity.password,
+      departament: persistenceEntity.departament,
+      phone: persistenceEntity.phone ?? undefined,
+      cpf: persistenceEntity.cpf ?? undefined,
+      role: persistenceEntity.role ?? undefined,
+      status: persistenceEntity.status ?? undefined,
+      createdAt: persistenceEntity.createdAt,
+      updatedAt: persistenceEntity.updatedAt,
+      deletedAt: persistenceEntity.deletedAt ?? undefined,
+    } as UserProps & { id: UniqueEntityID });
 
     return user;
   }

@@ -5,6 +5,7 @@ import type { UserRepository } from 'src/domain/repositories/user.repository';
 
 export interface DeleteUserUseCaseRequest {
   id: string;
+  actorId: string;
 }
 
 export interface DeleteUserUseCaseResponse {
@@ -20,11 +21,20 @@ export class DeleteUserUseCase {
     private readonly usersRepository: UserRepository,
   ) {}
 
-  async execute({ id }: DeleteUserUseCaseRequest): Promise<DeleteUserUseCaseResponse> {
+  async execute({ id, actorId }: DeleteUserUseCaseRequest): Promise<DeleteUserUseCaseResponse> {
     const user = await this.usersRepository.findById(id);
+    const actor = await this.usersRepository.findById(actorId);
+
+    if(!actor){
+      throw new NotFoundException('User actor not found');
+    }
 
     if (!user) {
       throw new NotFoundException('User not found');
+    }
+
+    if(actor.role !== "admin") {
+      console.log("Apenas usuários com permissões de 'Admin' podem deletar outros players.")
     }
 
     await this.usersRepository.delete(user.id.toString());

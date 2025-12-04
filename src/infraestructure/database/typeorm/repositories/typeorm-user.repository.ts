@@ -1,3 +1,4 @@
+// src/infraestructure/database/typeorm/repositories/typeorm-user.repository.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,13 +17,30 @@ export class TypeormUserRepository
 {
   constructor(
     @InjectRepository(TypeormUserEntity)
-    protected readonly userRepository: TypeormRepository<TypeormUserEntity>,
+    protected readonly ormRepository: TypeormRepository<TypeormUserEntity>,
     protected readonly userMapper: UserMapper,
     protected readonly config: ConfigService,
   ) {
-    super(userRepository, userMapper, config);
+    super(ormRepository, userMapper, config);
   }
-  findByEmail(email: string): Promise<User | null> {
-    throw new Error('Method not implemented.');
+
+  async findByEmail(email: string): Promise<User | null> {
+    const entity = await this.ormRepository.findOne({ where: { email } });
+    if (!entity) return null;
+    return this.userMapper.toDomain(entity);
+  }
+
+  async findByRegistration(registration: string): Promise<User | null> {
+    const entity = await this.ormRepository.findOne({
+      where: { registration },
+    });
+    if (!entity) return null;
+    return this.userMapper.toDomain(entity);
+  }
+
+  async findByCpf(cpf: string): Promise<User | null> {
+    const entity = await this.ormRepository.findOne({ where: { cpf } });
+    if (!entity) return null;
+    return this.userMapper.toDomain(entity);
   }
 }

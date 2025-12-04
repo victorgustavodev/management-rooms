@@ -5,14 +5,15 @@ import type { UserRepository } from 'src/domain/repositories/user.repository';
 import { User } from 'src/domain/entities/user.entity';
 
 export interface FetchUsersUseCaseRequest {
-  limit?: number;
-  offset?: number;
+  // limit?: number;
+  // offset?: number;
 }
 
 export interface FetchUsersUseCaseResponse {
   users: User[];
 }
 
+@Injectable()
 @Injectable()
 export class FetchUsersUseCase {
   private readonly logger = new Logger(FetchUsersUseCase.name);
@@ -23,12 +24,12 @@ export class FetchUsersUseCase {
   ) {}
 
   async execute({
-    limit = 1,
-    offset = 20,
+    // limit = 20,
+    // offset = 0,
   }: FetchUsersUseCaseRequest): Promise<FetchUsersUseCaseResponse> {
     const users = await this.usersRepository.findMany({
-      limit,
-      offset,
+      // limit,
+      // offset,
     });
 
     return { users };

@@ -1,48 +1,96 @@
-import { ApiPropertyOptional } from '@nestjs/swagger'
-import { IsNotEmpty, IsEmail, IsOptional, IsString, IsInt, Min } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsEmail,
+  IsEnum,
+  IsOptional,
+  IsString,
+  MaxLength,
+  IsNotEmpty,
+} from 'class-validator';
+import { UserRole, UserStatus } from 'src/domain/entities/user.entity';
 
-export class EditPlayerDto {
-  @ApiPropertyOptional({
-    description: 'Nome do jogador',
+export class EditUserDto {
+  @ApiProperty({
     example: 'Augusto Ipsum',
+    description: 'Nome do usuário',
+    required: false,
   })
   @IsOptional()
-  @IsString({ message: 'O nome deve ser uma string' })
-  @IsNotEmpty({ message: 'O nome não pode ser vazio' })
-  name?: string
+  @IsString()
+  @MaxLength(100)
+  name?: string;
 
-  @ApiPropertyOptional({
-    description: 'Email do jogador',
+  @ApiProperty({
     example: 'example@ex.com.br',
+    description: 'Email do usuário',
+    required: false,
   })
   @IsOptional()
   @IsEmail({}, { message: 'O email deve ser válido' })
-  email?: string
+  email?: string;
 
-  @ApiPropertyOptional({
-    description: 'Nível do jogador',
-    example: 5,
+  @ApiProperty({
+    example: '2023001234',
+    description: 'Número de matrícula do usuário',
+    required: false,
   })
   @IsOptional()
-  @IsInt({ message: 'O nível deve ser um número inteiro' })
-  @Min(1, { message: 'O nível deve ser positivo' })
-  level?: number
+  @IsString()
+  registration?: string;
 
-  @ApiPropertyOptional({
-    description: 'Experiência (XP) do jogador',
-    example: 1000,
+  @ApiProperty({
+    example: '123456',
+    description: 'Senha do usuário',
+    required: false,
   })
   @IsOptional()
-  @IsInt({ message: 'O XP deve ser um número inteiro' })
-  @Min(0, { message: 'O XP não pode ser negativo' })
-  xp?: number
+  @IsString()
+  password?: string;
 
-  @ApiPropertyOptional({
-    description: 'Quantidade de moedas do jogador',
-    example: 500,
+  @ApiProperty({
+    example: 'Tecnologia da Informação',
+    description: 'Departamento do usuário',
+    required: false,
   })
   @IsOptional()
-  @IsInt({ message: 'As moedas devem ser um número inteiro' })
-  @Min(0, { message: 'As moedas não podem ser negativas' })
-  coins?: number
+  @IsString()
+  departament?: string;
+
+  @ApiProperty({
+    example: '+55 81 99999-9999',
+    description: 'Telefone do usuário',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  phone?: string | null;
+
+  @ApiProperty({
+    example: '123.456.789-00',
+    description: 'CPF do usuário',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  cpf?: string | null;
+
+  @ApiProperty({
+    example: 'Default',
+    description: 'Role do usuário',
+    enum: UserRole,
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(UserRole)
+  role?: UserRole;
+
+  @ApiProperty({
+    example: 'Active',
+    description: 'Status do usuário',
+    enum: UserStatus,
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(UserStatus)
+  status?: UserStatus;
 }

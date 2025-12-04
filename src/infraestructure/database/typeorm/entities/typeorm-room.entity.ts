@@ -31,8 +31,8 @@ export class TypeormRoomEntity extends TypeormEntity {
   active: boolean;
 
   // User relationship (if this represents a user/room hybrid)
-  @OneToOne(() => TypeormEntity, { nullable: true })
-  @JoinColumn()
-  user?: TypeormEntity;
+  // @OneToOne(() => TypeormEntity, { nullable: true })
+  // @JoinColumn()
+  // user?: TypeormEntity;
 
 }

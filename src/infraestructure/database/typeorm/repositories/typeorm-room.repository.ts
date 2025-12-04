@@ -1,3 +1,4 @@
+// src/infraestructure/database/typeorm/repositories/typeorm-room.repository.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,10 +17,16 @@ export class TypeormRoomRepository
 {
   constructor(
     @InjectRepository(TypeormRoomEntity)
-    protected readonly roomRepository: TypeormRepository<TypeormRoomEntity>,
+    protected readonly ormRepository: TypeormRepository<TypeormRoomEntity>,
     protected readonly roomMapper: RoomMapper,
     protected readonly config: ConfigService,
   ) {
-    super(roomRepository, roomMapper, config);
+    super(ormRepository, roomMapper, config);
+  }
+
+  async findByName(name: string): Promise<Room | null> {
+    const entity = await this.ormRepository.findOne({ where: { name } });
+    if (!entity) return null;
+    return this.roomMapper.toDomain(entity);
   }
 }

@@ -1,98 +1,165 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Room Booking API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API para gerenciamento de salas e reservas, construída com NestJS, aplicando princípios de Clean Architecture e Domain-Driven Design (DDD), usando PostgreSQL como banco de dados e Docker para containerização.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Visão geral
 
-## Description
+O objetivo principal desta aplicação é gerenciar:
+- Salas (rooms)
+- Usuários
+- Reservas (bookings) de salas
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A API segue uma arquitetura em camadas bem definida (domain, application/use-cases, infrastructure, interfaces) para facilitar manutenção, testes e evolução do código.
 
-## Project setup
+## Tecnologias
 
-```bash
-$ npm install
-```
+- Node.js / TypeScript
+- NestJS
+- PostgreSQL
+- TypeORM
+- Docker / Docker Compose
+- Swagger (documentação da API)
 
-## Compile and run the project
+## Arquitetura
 
-```bash
-# development
-$ npm run start
+A aplicação segue Clean Architecture com DDD, separando responsabilidades em camadas:
 
-# watch mode
-$ npm run start:dev
+- **Domain**  
+  - Entidades de domínio (`User`, `Room`, `Booking`, etc.)  
+  - Regras de negócio e invariantes  
+  - Interfaces de repositórios
 
-# production mode
-$ npm run start:prod
-```
+- **Application (Use Cases)**  
+  - Casos de uso como `CreateUserUseCase`, `CreateBookingUseCase`, `EditRoomUseCase`  
+  - Orquestram regras de negócio e acesso aos repositórios
 
-## Run tests
+- **Infrastructure**  
+  - Implementações dos repositórios com TypeORM  
+  - Entidades TypeORM  
+  - Configurações de banco, migrations, mappers (Domain ↔ Persistence)
 
-```bash
-# unit tests
-$ npm run test
+- **Interface (HTTP)**  
+  - Controllers NestJS  
+  - DTOs de entrada/saída  
+  - Presenters (transformam entidades de domínio em respostas HTTP)
 
-# e2e tests
-$ npm run test:e2e
+## Funcionalidades principais
 
-# test coverage
-$ npm run test:cov
-```
+- Gerenciamento de usuários:
+  - Criação, listagem, busca por ID, atualização e remoção
+- Gerenciamento de salas:
+  - Cadastro de salas, capacidade, andar, horários de funcionamento, status ativo/inativo
+- Gerenciamento de reservas:
+  - Criação de reserva de sala para um usuário
+  - Controle de horário de início e fim
+  - Status da reserva (`pending`, `confirmed`, `canceled`, `rejected`)
+  - Suporte a recorrência (quando aplicável)
 
-## Deployment
+## Pré-requisitos
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- Node.js (LTS)
+- Docker e Docker Compose
+- Yarn ou npm
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Como executar com Docker
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+1. Copie o arquivo de exemplo de variáveis de ambiente:
+cp .env.example .env
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+text
 
-## Resources
+Ajuste as variáveis conforme necessário (porta da API, credenciais do banco, etc.).
 
-Check out a few resources that may come in handy when working with NestJS:
+2. Suba os containers:
+docker-compose up -d --build
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+text
 
-## Support
+3. A API deverá estar disponível em:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- `http://localhost:<PORT>` (por padrão, 3000)
 
-## Stay in touch
+## Como executar localmente (sem Docker)
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+1. Instale as dependências:
 
-## License
+yarn install
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+ou
+npm install
+
+text
+
+2. Configure o banco PostgreSQL localmente e ajuste o `.env`.
+
+3. Rode as migrations:
+
+yarn typeorm migration:run
+
+ou
+npm run typeorm migration:run
+
+text
+
+4. Inicie a aplicação:
+
+yarn start:dev
+
+ou
+npm run start:dev
+
+text
+
+## Documentação da API
+
+A documentação Swagger é exposta em:
+
+http://localhost:<PORT>/api
+
+text
+
+Lá você encontra os endpoints para gerenciamento de usuários, salas e reservas, com exemplos de requisição e resposta.
+
+## Estrutura de pastas (exemplo)
+
+src/
+core/
+entities/
+mappers/
+response/
+tokens/
+domain/
+entities/
+repositories/
+infra/
+database/
+typeorm/
+entities/
+mappers/
+repositories/
+http/
+users/
+dto/
+use-cases/
+user.controller.ts
+user.presenter.ts
+rooms/
+bookings/
+main.ts
+
+text
+
+## Testes
+
+Execute a suíte de testes com:
+
+yarn test
+
+ou
+npm test
+
+text
+
+## Licença
+
+Este projeto pode ser adaptado para o modelo de licença que você preferir (MIT, Apache-2.0, etc.). Atualize esta seção conforme a licença adotada.

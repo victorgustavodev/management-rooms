@@ -17,7 +17,6 @@ export class BookingMapper implements Mapper<Booking, TypeormBookingEntity> {
         start: persistenceEntity.start,
         end: persistenceEntity.end,
         status: persistenceEntity.status as BookingProps['status'],
-        recurrenceId: persistenceEntity.recurrenceId ?? null,
         createdAt: persistenceEntity.createdAt,
         updatedAt: persistenceEntity.updatedAt,
         deletedAt: persistenceEntity.deletedAt ?? undefined,
@@ -37,7 +36,6 @@ export class BookingMapper implements Mapper<Booking, TypeormBookingEntity> {
     entity.start = domainEntity.start;
     entity.end = domainEntity.end;
     entity.status = domainEntity.status;
-    entity.recurrenceId = domainEntity.recurrenceId ?? null;
     entity.createdAt = domainEntity.createdAt;
     entity.updatedAt = domainEntity.updatedAt;
     entity.deletedAt = domainEntity.deletedAt ?? null;

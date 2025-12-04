@@ -40,11 +40,11 @@ export class CreateUserUseCase {
     cpf,
     role,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    const existingUser = await this.usersRepository.findByEmail(email);
+    // const existingUser = await this.usersRepository.findByEmail(email);
 
-    if (existingUser) {
-      throw new ConflictException('User with this email already exists');
-    }
+    // if (existingUser) {
+    //   throw new ConflictException('User with this email already exists');
+    // }
 
     const user = User.create({
       name,

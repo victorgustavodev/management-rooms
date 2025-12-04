@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { DatabaseModule } from './database/database.module'
 import {
   USER_REPOSITORY,
-} from 'src/domain/repositories/tokens'
+} from 'src/core/tokens/repository.tokens'
 
 // 🧩 ENTIDADES
 import { TypeormUserEntity } from './database/typeorm/entities/typeorm-user.entity'

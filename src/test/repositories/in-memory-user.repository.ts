@@ -2,12 +2,16 @@ import { User } from 'src/domain/entities/user.entity';
 import { UserRepository } from 'src/domain/repositories/user.repository';
 
 interface PaginationParams {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
 }
 
 export class InMemoryUserRepository implements UserRepository {
   public items: User[] = [];
+
+  async create(user: User): Promise<void> {
+    this.items.push(user);
+  }
 
   async save(user: User): Promise<void> {
     const index = this.items.findIndex((u) => u.id.equals(user.id));
@@ -19,8 +23,8 @@ export class InMemoryUserRepository implements UserRepository {
     }
   }
 
-  async create(user: User): Promise<void> {
-    this.items.push(user);
+  async delete(id: string): Promise<void> {
+    this.items = this.items.filter((user) => user.id.toString() !== id);
   }
 
   async findById(id: string): Promise<User | null> {
@@ -33,11 +37,19 @@ export class InMemoryUserRepository implements UserRepository {
     return user ?? null;
   }
 
-  async delete(id: string): Promise<void> {
-    this.items = this.items.filter((user) => user.id.toString() !== id);
+  async findByRegistration(registration: string): Promise<User | null> {
+    const user = this.items.find((u) => u.registration === registration);
+    return user ?? null;
+  }
+
+  async findByCpf(cpf: string): Promise<User | null> {
+    const user = this.items.find((u) => u.cpf === cpf);
+    return user ?? null;
   }
 
   async findMany({ limit, offset }: PaginationParams): Promise<User[]> {
-    return this.items.slice(offset, offset + limit);
+    const start = offset ?? 0;
+    const end = limit != null ? start + limit : undefined;
+    return this.items.slice(start, end);
   }
 }
