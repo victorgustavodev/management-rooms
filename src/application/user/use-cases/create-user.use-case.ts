@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 import { User, UserProps, UserRole, UserStatus } from 'src/domain/entities/user.entity';
 import { USER_REPOSITORY } from 'src/core/tokens/repository.tokens';
@@ -40,11 +40,20 @@ export class CreateUserUseCase {
     cpf,
     role,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    // const existingUser = await this.usersRepository.findByEmail(email);
+    const duplicatedEmail = await this.usersRepository.findByEmail(email);
+    if(!cpf){
+      throw new NotFoundException('Não foi possivel localizar o cpf deste usuario')
+    }
+    const duplicatedCpf = await this.usersRepository.findByCpf(cpf);
+    const duplicatedRegistration = await this.usersRepository.findByRegistration(registration)
 
-    // if (existingUser) {
-    //   throw new ConflictException('User with this email already exists');
-    // }
+    if (duplicatedEmail) {
+      throw new ConflictException('User with this email already exists');
+    } else if (duplicatedCpf) {
+      throw new ConflictException('User with this cpf already exists');
+    } else if (duplicatedRegistration) {
+      throw new ConflictException('User with this registration already exists');
+    }
 
     const user = User.create({
       name,
