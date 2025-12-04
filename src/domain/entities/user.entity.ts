@@ -8,7 +8,7 @@ export interface UserProps {
   name: string
   email: string
   registration: string
-  password: string // Hash
+  password: string
   departament: string
   phone?: string
   cpf?: string

@@ -12,7 +12,7 @@ import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger'
 
 import { CreateUserUseCase } from './use-cases/create-user.use-case'
 
-import { CreateUserDto } from './dtos/create-user.dto'
+import { CreateUserDto } from './dto/create-user.dto'
 
 import { ApiResponses } from 'src/core/response/response.decorator'
 import { getResponseExamples } from 'src/core/response/response.examples'
