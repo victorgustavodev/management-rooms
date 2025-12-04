@@ -1,15 +1,13 @@
-import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { InjectRepository } from '@nestjs/typeorm'
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository as TypeormRepository } from 'typeorm';
 
-import { User } from 'src/domain/entities/user.entity'
-
-import { TypeormUserEntity } from '../entities/typeorm-user.entity'
-import { UserMapper } from '../mappers/user.mapper'
-
-import { TypeormEntityRepository } from './typeorm-entity.repository'
-import { UserRepository } from 'src/domain/repositories/user.repository'
-import { Repository as TypeormRepository } from 'typeorm'
+import { TypeormEntityRepository } from './typeorm-entity.repository';
+import { User } from 'src/domain/entities/user.entity';
+import { UserRepository } from 'src/domain/repositories/user.repository';
+import { TypeormUserEntity } from '../entities/typeorm-user.entity';
+import { UserMapper } from '../mappers/user.mapper';
 
 @Injectable()
 export class TypeormUserRepository
@@ -22,28 +20,9 @@ export class TypeormUserRepository
     protected readonly userMapper: UserMapper,
     protected readonly config: ConfigService,
   ) {
-    super(userRepository, userMapper, config)
+    super(userRepository, userMapper, config);
   }
   findByEmail(email: string): Promise<User | null> {
-    return this.userRepository
-      .findOne({ where: { email } })
-      .then((result) => {
-        if (!result) {
-          return null
-        }
-        return this.userMapper.toDomain(result)
-      })
-  }
-
-  async findById(id: string): Promise<User | null> {
-    const result = await this.userRepository.findOne({
-      where: { id },
-    })
-
-    if (!result) {
-      return null
-    }
-
-    return this.userMapper.toDomain(result)
+    throw new Error('Method not implemented.');
   }
 }

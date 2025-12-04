@@ -12,7 +12,7 @@ export interface BookingProps {
   roomId: string
   userId: string
   title: string
-  description?: string
+  description?: string | null
   start: Date
   end: Date
   status: BookingStatus
@@ -26,7 +26,7 @@ export class Booking extends Entity<BookingProps> {
   get title(): string { return this.props.title }
   set title(value: string) { this.props.title = value }
 
-  get description(): string | undefined { return this.props.description }
+  get description(): string | null | undefined { return this.props.description }
   set description(value: string) { this.props.description = value }
 
   get start(): Date { return this.props.start }

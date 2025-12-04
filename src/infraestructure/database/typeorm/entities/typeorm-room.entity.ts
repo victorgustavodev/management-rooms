@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TypeormEntity } from './typeorm-entity.entity';
 
-@Entity('users')
+@Entity('rooms')
 export class TypeormRoomEntity extends TypeormEntity {
   @Column()
   name: string;

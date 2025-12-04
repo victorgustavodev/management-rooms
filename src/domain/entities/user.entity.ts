@@ -10,10 +10,10 @@ export interface UserProps {
   registration: string;
   password: string;
   departament: string;
-  phone?: string;
-  cpf?: string;
-  role?: UserRole;
-  status?: UserStatus;
+  phone?: string | null;
+  cpf?: string | null;
+  role?: UserRole | null;
+  status?: UserStatus | null;
 }
 
 export class User extends Entity<UserProps> {

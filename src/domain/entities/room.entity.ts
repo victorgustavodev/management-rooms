@@ -6,9 +6,9 @@ export interface RoomProps {
   floor: string;
   capacity: number;
   location: string;
-  description?: string;
-  startOperationHours: string; // 'HH:mm'
-  endOperationHours: string; // 'HH:mm'
+  description?: string | null;
+  startOperationHours: string;
+  endOperationHours: string;
   weekdaysOpeningHours: number[];
   active: boolean;
 }
@@ -27,10 +27,7 @@ export class Room extends Entity<RoomProps> {
   get location(): string {
     return this.props.location;
   }
-  get description(): string | null {
-    if(!this.props.description){
-      throw new Error("No description")
-    }
+  get description(): string | null | undefined  {
     return this.props.description;
   }
   get startOperationHours(): string {
