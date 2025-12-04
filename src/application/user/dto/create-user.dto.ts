@@ -1,40 +1,91 @@
-import { ApiProperty } from '@nestjs/swagger'
-
-import { IsEmail, IsNotEmpty, IsString, Length, Matches } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+import { UserRole, UserStatus } from 'src/domain/entities/user.entity';
 
 export class CreateUserDto {
   @ApiProperty({
-    example: 'Fulano de Tal',
-    description: 'Nome completo do usuário'
+    example: 'Augusto Ipsum',
+    description: 'Nome do usuário',
   })
+  @IsNotEmpty({ message: 'O nome é obrigatório' })
   @IsString()
-  @Length(3, 100)
-  name: string
+  @MaxLength(100)
+  name: string;
 
   @ApiProperty({
-    example: 'exemplo@gmail.com',
-    description: 'Email do usuário'
+    example: 'example@ex.com.br',
+    description: 'Email do usuário',
   })
-  @IsEmail()
-  @IsNotEmpty()
-  email: string
+  @IsNotEmpty({ message: 'O email é obrigatório' })
+  @IsEmail({}, { message: 'O email deve ser válido' })
+  email: string;
 
   @ApiProperty({
-    example: '473',
-    description: 'Número de inscrição do usuário'
+    example: '2023001234',
+    description: 'Número de matrícula do usuário',
   })
+  @IsNotEmpty({ message: 'A matrícula é obrigatória' })
   @IsString()
-  @IsNotEmpty()
-  registration:string
+  registration: string;
 
   @ApiProperty({
-    example: 'active',
+    example: '123456',
+    description: 'Senha do usuário',
+  })
+  @IsNotEmpty({ message: 'A senha é obrigatória' })
+  @IsString()
+  password: string;
+
+  @ApiProperty({
+    example: 'Tecnologia da Informação',
+    description: 'Departamento do usuário',
+  })
+  @IsNotEmpty({ message: 'O departamento é obrigatório' })
+  @IsString()
+  departament: string;
+
+  @ApiProperty({
+    example: '+55 81 99999-9999',
+    description: 'Telefone do usuário',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  phone?: string;
+
+  @ApiProperty({
+    example: '123.456.789-00',
+    description: 'CPF do usuário',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  cpf?: string;
+
+  @ApiProperty({
+    example: 'Default',
+    description: 'Role do usuário',
+    enum: UserRole,
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(UserRole)
+  role?: UserRole = UserRole.Default;
+
+  @ApiProperty({
+    example: 'Active',
     description: 'Status do usuário',
-    enum: ['active', 'inactive']
+    enum: UserStatus,
+    required: false,
   })
-  @IsString()
-  @Matches(/^(active|inactive)$/, {
-    message: 'Status deve ser "active" ou "inactive"'
-  })
-  status: 'active' | 'inactive'
+  @IsOptional()
+  @IsEnum(UserStatus)
+  status?: UserStatus = UserStatus.Active;
 }
